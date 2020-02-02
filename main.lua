@@ -11,6 +11,9 @@ function setGlobalVariables()
 end
 
 function love.update(dt)
+    player.coolDown = player.coolDown - .08
+
+
     if love.keyboard.isDown("right") and player.x < (screenHeight + player.imageWidth) then
         player.x = player.x + (player.speed * dt)
     end
@@ -27,12 +30,13 @@ function love.update(dt)
     end
 
     if love.keyboard.isDown("space") then 
-        player.shoot()
+        player.shoot(dt)
+ 
     end 
 
 
     for k, v in pairs(player.shots) do
-        v.y = v.y - 20
+        v.y = v.y - 10
         if v.y < 0 then 
          table.remove(player.shots, k)
         end 

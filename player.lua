@@ -10,6 +10,9 @@ local player =  {}
         player.imageHeight = 72
         player.imageWidth = 90
         player.shots = {}
+        player.coolDown = 1
+
+
     end
 
     function player.setx(xvalue)
@@ -24,11 +27,14 @@ local player =  {}
         love.graphics.draw(player.image, player.x, player.y)
     end
 
-    function player.shoot()
-        bullet={}
-    	bullet.x= player.x + 20
-        bullet.y= player.y
-        table.insert(player.shots, bullet)
+    function player.shoot(dt)
+        if  player.coolDown <= 0 then 
+            bullet={}
+            bullet.x= player.x + 20
+            bullet.y= player.y
+            table.insert(player.shots, bullet)
+            player.coolDown = 1
+        end 
     end 
 
 return player
