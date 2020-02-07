@@ -1,8 +1,11 @@
 player = require("player")
+GameState = {}
 
 function love.load()
     setGlobalVariables()
     player.load()
+    GameState.Enemies = {}
+
 end
 
 function setGlobalVariables()
@@ -11,12 +14,12 @@ function setGlobalVariables()
 end
 
 function love.update(dt)
-    player.coolDown = player.coolDown - .08
-
+     player.coolDown = player.coolDown - player.shootCoolDown
 
     if love.keyboard.isDown("right") and player.x < (screenHeight + player.imageWidth) then
         player.x = player.x + (player.speed * dt)
     end
+    
     if love.keyboard.isDown("left") and player.x > 0 then
         player.x = player.x - (player.speed * dt)
     end
@@ -31,9 +34,7 @@ function love.update(dt)
 
     if love.keyboard.isDown("space") then 
         player.shoot(dt)
- 
     end 
-
 
     for k, shot in pairs(player.shots) do
         shot.y = shot.y - 10
@@ -42,7 +43,7 @@ function love.update(dt)
         end 
 
     end
- 
+
 end
 
 function love.draw()

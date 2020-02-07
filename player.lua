@@ -8,19 +8,11 @@ local player =  {}
         player.imageWidth = 90
         player.x =  love.graphics.getWidth() / 2
         player.y =  love.graphics.getHeight() - player.imageHeight
-        player.speed = 300
+        player.speed = 300 
         player.shots = {}
         player.coolDown = 1
-
-
-    end
-
-    function player.setx(xvalue)
-        player.x = xvalue
-    end 
-
-    function player.sety(yvalue)
-        player.y = yvalue
+        player.shootCoolDown =.05
+        player.health = 5
     end
 
     function player.draw()
