@@ -4,11 +4,11 @@ local player =  {}
     function player.load()
         player.image = love.graphics.newImage("images/player_90_72.png")
         print(player.image)
-        player.x = 50
-        player.y = 50
-        player.speed = 300
         player.imageHeight = 72
         player.imageWidth = 90
+        player.x =  love.graphics.getWidth() / 2
+        player.y =  love.graphics.getHeight() - player.imageHeight
+        player.speed = 300
         player.shots = {}
         player.coolDown = 1
 
