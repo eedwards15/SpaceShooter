@@ -1,4 +1,4 @@
-require "missile"
+MissileObj = require("missile")
 local player =  {}
 
     function player.load()
@@ -30,8 +30,9 @@ local player =  {}
     function player.shoot(dt)
         if  player.coolDown <= 0 then 
             bullet={}
-            bullet.x= player.x + 20
+            bullet.x= player.x  + player.imageWidth / 2
             bullet.y= player.y
+
             table.insert(player.shots, bullet)
             player.coolDown = 1
         end 

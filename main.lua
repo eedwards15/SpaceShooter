@@ -35,9 +35,9 @@ function love.update(dt)
     end 
 
 
-    for k, v in pairs(player.shots) do
-        v.y = v.y - 10
-        if v.y < 0 then 
+    for k, shot in pairs(player.shots) do
+        shot.y = shot.y - 10
+        if shot.y < 0 then 
          table.remove(player.shots, k)
         end 
 

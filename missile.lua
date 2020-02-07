@@ -1,4 +1,4 @@
-Missile = {x= 0, y =0 }
+Missile = {}
 
 function Missile:new (o,x, y)
    o = o or {}
