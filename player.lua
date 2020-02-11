@@ -1,9 +1,8 @@
-MissileObj = require("missile")
 local player =  {}
-
     function player.load()
-        player.image = love.graphics.newImage("images/player_90_72.png")
-        print(player.image)
+        sprite = {}
+        sprite.player = love.graphics.newImage("images/player_90_72.png")
+
         player.imageHeight = 72
         player.imageWidth = 90
         player.x =  love.graphics.getWidth() / 2
@@ -16,7 +15,7 @@ local player =  {}
     end
 
     function player.draw()
-        love.graphics.draw(player.image, player.x, player.y)
+        love.graphics.draw(sprite.player, player.x, player.y)
     end
 
     function player.shoot(dt)
