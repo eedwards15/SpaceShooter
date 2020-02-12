@@ -1,8 +1,8 @@
+MissileObj = require("missile")
 local player =  {}
     function player.load()
         sprite = {}
         sprite.player = love.graphics.newImage("images/player_90_72.png")
-
         player.imageHeight = 72
         player.imageWidth = 90
         player.x =  love.graphics.getWidth() / 2
@@ -26,7 +26,7 @@ local player =  {}
 
             table.insert(player.shots, bullet)
             player.coolDown = 1
-        end 
-    end 
+        end
+    end
 
 return player

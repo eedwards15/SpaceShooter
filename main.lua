@@ -1,32 +1,29 @@
+utils = require("helpers.utils")
+enemy = require("enemy")
+
 GameState = {}
 
 function love.load()
-    setGlobalVariables()
+    sprite = {}
+    sprite.player = love.graphics.newImage("images/player_90_72.png")
+    sprite.enemy = love.graphics.newImage("images/enemy.png")
+    sprite.bullet = love.graphics.newImage("images/missile.png")
+
+    screenWidth = love.graphics.getWidth()
+    screenHeight = love.graphics.getHeight()
    
     Enemies = {}
 
     player = {}
     player.imageHeight = 72
     player.imageWidth = 90
-    player.x =  love.graphics.getWidth() / 2
+    player.x =  screenWidth / 2
     player.y =  love.graphics.getHeight() - player.imageHeight
     player.speed = 300 
     player.shots = {}
     player.coolDown = 1
     player.shootCoolDown =.05
     player.health = 5
-
-    sprite = {}
-    sprite.player = love.graphics.newImage("images/player_90_72.png")
-    sprite.enemy = love.graphics.newImage("images/enemy.png")
-
-
-
-end
-
-function setGlobalVariables()
-    screenWidth = love.graphics.getWidth()
-    screenHeight = love.graphics.getHeight()
 end
 
 function love.update(dt)
@@ -61,8 +58,8 @@ function love.update(dt)
     end
 
     for i,shot in ipairs(player.shots) do
-        for j,enemy in ipairs(Enemies) do
-          if distanceBetween(enemy.x, enemy.y, shot.x, shot.y) < 70 then
+        for j,e in ipairs(Enemies) do
+          if utils.distanceBetween(e.x, e.y, shot.x, shot.y) < 70 then
             table.remove(player.shots, i)
             table.remove(Enemies,j)
           end
@@ -75,23 +72,14 @@ function love.draw()
     love.graphics.draw(sprite.player, player.x, player.y)
     
     for k, v in pairs(player.shots) do
-        love.graphics.draw(love.graphics.newImage("images/missile.png"), v.x, v.y)
+        love.graphics.draw(sprite.bullet, v.x, v.y, nil, nil,nil, sprite.bullet:getWidth()/2, sprite.bullet:getHeight()/2)
     end
 
     for k, v in pairs(Enemies) do
-        love.graphics.draw(sprite.enemy, v.x, v.y, degreesToRadians(180),nil,nil, sprite.enemy:getWidth()/2, sprite.enemy:getHeight()/2)
+        love.graphics.draw(sprite.enemy, v:getX(),v:getY(), utils.degreesToRadians(180),nil,nil, sprite.enemy:getWidth()/2, sprite.enemy:getHeight()/2)
     end
 
 end
-
-function degreesToRadians(degrees)
-    return (degrees * math.pi /180)
-end 
-
-function distanceBetween(x1, y1, x2, y2)
-    return math.sqrt((y2 - y1)^2 + (x2 - x1)^2)
-  end
-  
 
 function love.keypressed( key, scancode, isrepeat )
     if key == "s" then 
@@ -100,10 +88,11 @@ function love.keypressed( key, scancode, isrepeat )
 end
 
 function drawEnemey()
-    local enemy = {}
-    enemy.x = player.x + 50
-    enemy.y = player.y - 50
-    table.insert(Enemies, enemy)
+    local newEnemy = enemy:new(player.x + 50, player.y -50)
+    -- local enemy = {}
+    -- enemy.x = 
+    -- enemy.y = player.y - 50
+    table.insert(Enemies, newEnemy)
 end
 
 function shoot(dt)
