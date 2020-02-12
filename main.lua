@@ -13,6 +13,7 @@ function love.load()
     screenHeight = love.graphics.getHeight()
    
     Enemies = {}
+    EnemyCoolDown = 5
 
     player = {}
     player.imageHeight = 72
@@ -28,6 +29,8 @@ end
 
 function love.update(dt)
      player.coolDown = player.coolDown - player.shootCoolDown
+     EnemyCoolDown = EnemyCoolDown - .05 
+
 
     if love.keyboard.isDown("right") and player.x < (screenHeight + player.imageWidth) then
         player.x = player.x + (player.speed * dt)
@@ -66,6 +69,8 @@ function love.update(dt)
         end
     end
 
+    SpawnEmemies()
+
 end
 
 function love.draw()
@@ -83,16 +88,19 @@ end
 
 function love.keypressed( key, scancode, isrepeat )
     if key == "s" then 
-        drawEnemey()
+        SpawnEmemies()
     end 
 end
 
-function drawEnemey()
-    local newEnemy = enemy:new(player.x + 50, player.y -50)
-    -- local enemy = {}
-    -- enemy.x = 
-    -- enemy.y = player.y - 50
-    table.insert(Enemies, newEnemy)
+function SpawnEmemies()
+    if EnemyCoolDown <= 0 then 
+        local x = math.random(sprite.enemy:getWidth()/2, screenWidth - sprite.enemy:getWidth())
+        local y = math.random(sprite.enemy:getWidth(), screenHeight/2)
+        local newEnemy = enemy:new(x, y)
+        table.insert(Enemies, newEnemy)
+        EnemyCoolDown = 5
+    end 
+
 end
 
 function shoot(dt)
