@@ -1,6 +1,7 @@
 utils = require("helpers.utils")
 Spawner = require("Spawner")
 Player = require("player")
+Ui = require("helpers.ui")
 GameState = {}
 
 function love.load()
@@ -50,20 +51,18 @@ function love.update(dt)
         for j,e in ipairs(Spawner.Enemies) do
           if utils.distanceBetween(e.x, e.y, shot.x, shot.y) < (Spawner.sprite:getHeight()/2) then
             table.remove(Player.shots, i)
-            table.remove(Spawner.Enemies,j)
+            Spawner.Destroy(j)
             GameState.Score = GameState.Score + 10
           end
         end
     end
-    Spawner.Update()
+    Spawner.Update(dt)
 end
 
 function love.draw()
-    love.graphics.draw(Player.sprite, Player.x, Player.y)  
-    love.graphics.setFont(myFont)
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.print("Score: " .. GameState.Score)
-
+    love.graphics.draw(Player.sprite, Player.x, Player.y)
+    Ui.DrawUI(GameState.Score)
+ 
     for k, v in pairs(Player.shots) do
         love.graphics.draw(sprite.bullet, v.x, v.y, nil, nil,nil, sprite.bullet:getWidth()/2, sprite.bullet:getHeight()/2)
     end

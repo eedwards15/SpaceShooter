@@ -3,8 +3,12 @@ Enemy.__index = Enemy
 
 function Enemy:new(x,y)
     local o = {}
-    o.x = x or 0
-    o.y = y or 0
+    o.x = 0
+    o.y = 0
+    o.wScale = .1
+    o.hScale = .1
+    o.eX = x 
+    o.eY = y
     setmetatable(o,enemy)
     return o
 end
