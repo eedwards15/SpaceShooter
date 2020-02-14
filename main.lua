@@ -30,7 +30,6 @@ end
 
 function love.update(dt)
      player.coolDown = player.coolDown - player.shootCoolDown
-    --  EnemyCoolDown = EnemyCoolDown - .05 
 
     if love.keyboard.isDown("right") and player.x < (screenHeight + player.imageWidth) then
         player.x = player.x + (player.speed * dt)

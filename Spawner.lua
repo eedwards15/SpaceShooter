@@ -2,7 +2,7 @@ enemy = require('enemy')
 utils = require('helpers.utils')
 
 Spawner = {}
-Spawner.CoolDown = 5
+Spawner.CoolDown = 6
 Spawner.Enemies = {}
 
 function Spawner.Load()
