@@ -1,67 +1,55 @@
 utils = require("helpers.utils")
 Spawner = require("Spawner")
-
+Player = require("player")
 GameState = {}
 
 function love.load()
     GameState.Score = 0 
-    myFont = love.graphics.newFont(40)
-
-    sprite = {}
-    sprite.player = love.graphics.newImage("images/player_90_72.png")
-    sprite.bullet = love.graphics.newImage("images/missile.png")
-
     screenWidth = love.graphics.getWidth()
     screenHeight = love.graphics.getHeight()
-   
+    myFont = love.graphics.newFont(40)
+
+    Player.Load()
     Spawner.Load()
 
-    player = {}
-    player.imageHeight = 72
-    player.imageWidth = 90
-    player.x =  screenWidth / 2
-    player.y =  love.graphics.getHeight() - player.imageHeight
-    player.speed = 350 
-    player.shots = {}
-    player.coolDown = 1
-    player.shootCoolDown =.05
-    player.health = 5
+    sprite = {}
+    sprite.bullet = love.graphics.newImage("images/missile.png")
 end
 
 function love.update(dt)
-     player.coolDown = player.coolDown - player.shootCoolDown
+     Player.coolDown = Player.coolDown - Player.shootCoolDown
 
-    if love.keyboard.isDown("right") and player.x < (screenHeight + player.imageWidth) then
-        player.x = player.x + (player.speed * dt)
+    if love.keyboard.isDown("right") and Player.x < (screenHeight + Player.imageWidth) then
+        Player.x = Player.x + (Player.speed * dt)
     end
     
-    if love.keyboard.isDown("left") and player.x > 0 then
-        player.x = player.x - (player.speed * dt)
+    if love.keyboard.isDown("left") and Player.x > 0 then
+        Player.x = Player.x - (Player.speed * dt)
     end
 
-    if love.keyboard.isDown("down")  and player.y < (screenHeight - player.imageHeight) then
-        player.y = player.y + (player.speed * dt)
+    if love.keyboard.isDown("down")  and Player.y < (screenHeight - Player.imageHeight) then
+        Player.y = Player.y + (Player.speed * dt)
     end
 
-    if love.keyboard.isDown("up") and player.y > 0 then
-        player.y = player.y - (player.speed * dt)
+    if love.keyboard.isDown("up") and Player.y > 0 then
+        Player.y = Player.y - (Player.speed * dt)
     end
 
     if love.keyboard.isDown("space") then 
-        shoot(dt)
+        Player.Shoot(dt)
     end 
 
-    for k, shot in pairs(player.shots) do
+    for k, shot in pairs(Player.shots) do
         shot.y = shot.y - 10
         if shot.y < 0 then 
-         table.remove(player.shots, k)
+         table.remove(Player.shots, k)
         end 
     end
 
-    for i,shot in ipairs(player.shots) do
+    for i,shot in ipairs(Player.shots) do
         for j,e in ipairs(Spawner.Enemies) do
           if utils.distanceBetween(e.x, e.y, shot.x, shot.y) < (Spawner.sprite:getHeight()/2) then
-            table.remove(player.shots, i)
+            table.remove(Player.shots, i)
             table.remove(Spawner.Enemies,j)
             GameState.Score = GameState.Score + 10
           end
@@ -71,33 +59,16 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.draw(sprite.player, player.x, player.y)
-    
+    love.graphics.draw(Player.sprite, Player.x, Player.y)  
     love.graphics.setFont(myFont)
     love.graphics.setColor(255, 255, 255)
     love.graphics.print("Score: " .. GameState.Score)
 
-    for k, v in pairs(player.shots) do
+    for k, v in pairs(Player.shots) do
         love.graphics.draw(sprite.bullet, v.x, v.y, nil, nil,nil, sprite.bullet:getWidth()/2, sprite.bullet:getHeight()/2)
     end
 
     Spawner.Draw()
 end
 
-function love.keypressed( key, scancode, isrepeat )
-    if key == "s" then 
-        Spawner.CreateEnemies()
-    end 
-end
 
-
-function shoot(dt)
-    if  player.coolDown <= 0 then 
-        player.bullets = {}
-        player.bullets.x= player.x  + player.imageWidth / 2
-        player.bullets.y= player.y
-
-        table.insert(player.shots, player.bullets)
-        player.coolDown = 1
-    end 
-end 
