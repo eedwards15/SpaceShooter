@@ -3,11 +3,12 @@ utils = require('helpers.utils')
 
 Spawner = {}
 Spawner.CoolDown = 6
-Spawner.limit = 3 
+Spawner.limit = 1 
 Spawner.Enemies = {}
 
 function Spawner.Load()
     Spawner.sprite = love.graphics.newImage("images/enemy.PNG")
+    Spawner.bullet = love.graphics.newImage("images/missile.png")
 end 
 
 function Spawner.Update(dt)
@@ -21,7 +22,7 @@ function Spawner.Update(dt)
         end 
 
         if Spawner.Enemies[k].x < Spawner.Enemies[k].eX  then 
-            Spawner.Enemies[k].x =Spawner.Enemies[k].x + 150 * dt
+            Spawner.Enemies[k].x =Spawner.Enemies[k].x + Spawner.Enemies[k].speed * dt
         end 
 
 
@@ -30,8 +31,23 @@ function Spawner.Update(dt)
         end 
 
         if Spawner.Enemies[k].y < Spawner.Enemies[k].eY  then 
-            Spawner.Enemies[k].y =Spawner.Enemies[k].y + 150 * dt
+            Spawner.Enemies[k].y =Spawner.Enemies[k].y + Spawner.Enemies[k].speed * dt
         end 
+
+        if Spawner.Enemies[k].shootCoolDown < 0 then 
+            Spawner.Enemies[k]:shoot()
+        end 
+
+        Spawner.Enemies[k].shootCoolDown = Spawner.Enemies[k].shootCoolDown -.05; 
+
+        for bulletIndex, bullet in pairs(Spawner.Enemies[k].bullets) do
+            bullet.y = bullet.y + 10
+
+            if bullet.y > 900 then 
+                table.remove(Spawner.Enemies[k].bullets, bulletIndex)
+            end 
+        end 
+
     end
 
     Spawner.CreateEnemies()
@@ -58,6 +74,11 @@ end
 function Spawner.Draw()
     for k, v in pairs(Spawner.Enemies) do
         love.graphics.draw(Spawner.sprite, v:getX(),v:getY(), utils.degreesToRadians(180),v.wScale,v.hScale,Spawner.sprite:getWidth()/2, Spawner.sprite:getHeight()/2)
+
+        for bulletIndex, bullet in pairs(Spawner.Enemies[k].bullets) do
+            love.graphics.draw(Spawner.bullet ,bullet.x, bullet.y, nil, nil,nil,Spawner.bullet:getWidth()/2, Spawner.bullet:getHeight()/2)
+        end 
+
     end
 end 
 
