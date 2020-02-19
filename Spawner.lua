@@ -7,7 +7,7 @@ Spawner.limit = 3
 Spawner.Enemies = {}
 
 function Spawner.Load()
-    Spawner.sprite = love.graphics.newImage("images/enemy.png")
+    Spawner.sprite = love.graphics.newImage("images/enemy.PNG")
 end 
 
 function Spawner.Update(dt)
