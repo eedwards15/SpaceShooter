@@ -12,6 +12,7 @@ function Enemy:new(x,y)
     o.speed = 150
     o.bullets = {}
     o.shootCoolDown = 5
+    o.canBeHit = false
     setmetatable(o,enemy)
 
 

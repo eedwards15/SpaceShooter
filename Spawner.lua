@@ -38,6 +38,10 @@ function Spawner.Update(dt)
             Spawner.Enemies[k]:shoot()
         end 
 
+        if Spawner.Enemies[k].wScale >=1 and Spawner.Enemies[k].hScale >= 1 then 
+            Spawner.Enemies[k].canBeHit = true
+        end
+
         Spawner.Enemies[k].shootCoolDown = Spawner.Enemies[k].shootCoolDown -.05; 
 
         for bulletIndex, bullet in pairs(Spawner.Enemies[k].bullets) do
