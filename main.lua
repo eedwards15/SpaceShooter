@@ -49,7 +49,10 @@ function love.update(dt)
 
     for j,e in ipairs(Spawner.Enemies) do
         for eBulletIndex, eBullet in ipairs(e.bullets) do 
-          if utils.distanceBetween(eBullet.x, eBullet.y, Player.x, Player.y) < (Player.sprite:getHeight()/2) then
+
+          collison = utils.collison(eBullet.x,Player.x,eBullet.y,Player.y,sprite.bullet:getWidth(),Player.imageWidth,sprite.bullet:getHeight(),Player.imageHeight);
+          --if utils.distanceBetween(eBullet.x, eBullet.y, Player.x, Player.y) < (Player.sprite:getHeight()/2) then
+          if collison == true then
               GameState.Score = GameState.Score - 10
               table.remove(e.bullets,eBulletIndex)
             end
