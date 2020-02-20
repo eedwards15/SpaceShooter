@@ -47,13 +47,25 @@ function love.update(dt)
         end 
     end
 
+    for j,e in ipairs(Spawner.Enemies) do
+        for eBulletIndex, eBullet in ipairs(e.bullets) do 
+          if utils.distanceBetween(eBullet.x, eBullet.y, Player.x, Player.y) < (Player.sprite:getHeight()/2) then
+              GameState.Score = GameState.Score - 10
+              table.remove(e.bullets,eBulletIndex)
+            end
+        end
+    end
+
+
+
     for i,shot in ipairs(Player.shots) do
         for j,e in ipairs(Spawner.Enemies) do
-          if utils.distanceBetween(e.x, e.y, shot.x, shot.y) < (Spawner.sprite:getHeight()/2) then
+          if utils.distanceBetween(e.x, e.y, shot.x, shot.y) < (Spawner.sprite:getWidth()) then
             table.remove(Player.shots, i)
             Spawner.Destroy(j)
             GameState.Score = GameState.Score + 10
           end
+
         end
     end
     Spawner.Update(dt)
