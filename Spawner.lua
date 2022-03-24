@@ -38,6 +38,12 @@ function Spawner.Update(dt)
             Spawner.Enemies[k]:shoot()
         end 
 
+        if Spawner.Enemies[k].wScale >=1 and Spawner.Enemies[k].hScale >= 1 and Spawner.Enemies[k].canBeHit == false then 
+            Spawner.Enemies[k].wScale = 1
+            Spawner.Enemies[k].hScale = 1
+            Spawner.Enemies[k].canBeHit = true
+        end
+
         Spawner.Enemies[k].shootCoolDown = Spawner.Enemies[k].shootCoolDown -.05; 
 
         for bulletIndex, bullet in pairs(Spawner.Enemies[k].bullets) do
@@ -73,7 +79,7 @@ end
 
 function Spawner.Draw()
     for k, v in pairs(Spawner.Enemies) do
-        love.graphics.draw(Spawner.sprite, v:getX(),v:getY(), utils.degreesToRadians(180),v.wScale,v.hScale,Spawner.sprite:getWidth()/2, Spawner.sprite:getHeight()/2)
+        love.graphics.draw(Spawner.sprite, v:getX(),v:getY(), utils.degreesToRadians(180),v.wScale,v.hScale,Spawner.sprite:getWidth(), Spawner.sprite:getHeight())
 
         for bulletIndex, bullet in pairs(Spawner.Enemies[k].bullets) do
             love.graphics.draw(Spawner.bullet ,bullet.x, bullet.y, nil, nil,nil,Spawner.bullet:getWidth()/2, Spawner.bullet:getHeight()/2)

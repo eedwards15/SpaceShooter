@@ -12,9 +12,8 @@ function Enemy:new(x,y)
     o.speed = 150
     o.bullets = {}
     o.shootCoolDown = 5
+    o.canBeHit = false
     setmetatable(o,enemy)
-
-
     return o
 end
 
@@ -28,8 +27,8 @@ end
 
 function Enemy:shoot()
     bullet={}
-    bullet.x= self.x 
-    bullet.y= self.y
+    bullet.x=  (self.x + (150 /2)) --YAY MAGIC NUMBERS(height of image) 
+    bullet.y= (self.y + (120 /2 )) -- YAY MAGIC NUMBERS(width of image)
     table.insert(self.bullets, bullet)
     self.shootCoolDown = 5
 end 
